@@ -74,15 +74,15 @@ function PropertyContent() {
   };
 
   const handleExport = async () => {
-    if (id) {
+    if (id && property) {
       const csv = await db.exportPropertyData(id);
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      // Format the filename using the id instead of property info
-      const safeAddress = id.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      const date = new Date().toISOString().split('T')[0];
+      // Format the address for filename by replacing spaces and special characters
+      const safeAddress = property.address.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      const date = new Date(property.date).toISOString().split('T')[0];
       a.download = `open-house-${safeAddress}-${date}.csv`;
       a.click();
       window.URL.revokeObjectURL(url);

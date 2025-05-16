@@ -34,17 +34,6 @@ jobs:
           sed -i 's/<Button size="lg">Large<\/Button>/<!-- <Button size="lg">Large<\/Button> -->/' src/components/button-demo.tsx
           sed -i 's/<Button size="icon">🔔<\/Button>/<!-- <Button size="icon">🔔<\/Button> -->/' src/components/button-demo.tsx
 
-      - name: Fix unused property in db.ts
-        run: |
-          # Comment out the unused property in the exportPropertyData method
-          sed -i 's/const property = await this.getProperty(propertyId);/\/\/ const property = await this.getProperty(propertyId);/' src/lib/db.ts
-
-      - name: Update handleExport to work with commented property
-        run: |
-          sed -i 's/if (id && property) {/if (id) {/' src/app/property/page.tsx
-          sed -i 's/const safeAddress = property.address.replace.*/const safeAddress = id.replace(/[^a-z0-9]/gi, "_").toLowerCase();/' src/app/property/page.tsx
-          sed -i 's/const date = new Date(property.date).toISOString().split.*/const date = new Date().toISOString().split("T")[0];/' src/app/property/page.tsx
-
       - name: Build
         run: npm run build
 
