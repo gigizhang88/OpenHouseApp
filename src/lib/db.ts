@@ -75,7 +75,7 @@ export const db = {
     await del(`${DB_PREFIX}${id}`);
   },
 
-  async exportPropertyData(propertyId: string): Promise<string> {
+  async exportPropertyData(propertyId: string): Promise<{ csv: string; property: Property | null }> {
     const property = await this.getProperty(propertyId);
     const visitors = await this.getVisitors(propertyId);
     
@@ -91,6 +91,7 @@ export const db = {
       visitor.comments || ''
     ].map(field => `"${field}"`).join(','));
 
-    return [headers.join(','), ...rows].join('\n');
+    const csv = [headers.join(','), ...rows].join('\n');
+    return { csv, property };
   }
 }; 

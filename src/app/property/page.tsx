@@ -74,16 +74,26 @@ function PropertyContent() {
   };
 
   const handleExport = async () => {
-    if (id && property) {
-      const csv = await db.exportPropertyData(id);
+    if (id) {
+      const { csv, property: exportedProperty } = await db.exportPropertyData(id);
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      // Format the address for filename by replacing spaces and special characters
-      const safeAddress = property.address.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      const date = new Date(property.date).toISOString().split('T')[0];
-      a.download = `open-house-${safeAddress}-${date}.csv`;
+      
+      // Use either the local property state or the one returned from export
+      const p = property || exportedProperty;
+      
+      if (p) {
+        // Format the address for filename by replacing spaces and special characters
+        const safeAddress = p.address.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        const date = new Date(p.date).toISOString().split('T')[0];
+        a.download = `open-house-${safeAddress}-${date}.csv`;
+      } else {
+        // Fallback if no property data is available
+        a.download = `open-house-${id}.csv`;
+      }
+      
       a.click();
       window.URL.revokeObjectURL(url);
     }
