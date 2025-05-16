@@ -22,18 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fix type error in button-demo component
-        run: |
-          # Replace HTML comments with JSX comments in the button-demo component
-          sed -i 's/<Button variant="secondary">Secondary<\/Button>/{\/\* <Button variant="secondary">Secondary<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button variant="destructive">Destructive<\/Button>/{\/\* <Button variant="destructive">Destructive<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button variant="outline">Outline<\/Button>/{\/\* <Button variant="outline">Outline<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button variant="ghost">Ghost<\/Button>/{\/\* <Button variant="ghost">Ghost<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button variant="link">Link<\/Button>/{\/\* <Button variant="link">Link<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button size="sm">Small<\/Button>/{\/\* <Button size="sm">Small<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button size="lg">Large<\/Button>/{\/\* <Button size="lg">Large<\/Button> \*\/}/' src/components/button-demo.tsx
-          sed -i 's/<Button size="icon">🔔<\/Button>/{\/\* <Button size="icon">🔔<\/Button> \*\/}/' src/components/button-demo.tsx
-
       - name: Build
         run: npm run build
 
