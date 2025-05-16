@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { HomeIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { db, type Property, type Visitor } from '@/lib/db';
 
 type FormData = {
@@ -88,6 +88,20 @@ function PropertyContent() {
       window.URL.revokeObjectURL(url);
     }
   };
+  
+  const handleDeleteVisitor = async (visitorId: string) => {
+    if (confirm('Are you sure you want to delete this visitor?')) {
+      await db.deleteVisitor(visitorId);
+      loadVisitors();
+    }
+  };
+  
+  const handleDeleteProperty = async () => {
+    if (id && confirm('Are you sure you want to delete this property and all its visitors?')) {
+      await db.deleteProperty(id);
+      router.push('/');
+    }
+  };
 
   if (!property) {
     return <div className="p-8">Loading...</div>;
@@ -102,13 +116,22 @@ function PropertyContent() {
             {new Date(property.date).toLocaleDateString()} - {property.timeSlot}
           </p>
         </div>
-        <button
-          onClick={() => router.push('/')}
-          className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-        >
-          <HomeIcon className="w-5 h-5 mr-2" />
-          Home
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => router.push('/')}
+            className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+          >
+            <HomeIcon className="w-5 h-5 mr-2" />
+            Home
+          </button>
+          <button
+            onClick={handleDeleteProperty}
+            className="flex items-center px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
+            <TrashIcon className="w-5 h-5 mr-2" />
+            Delete Property
+          </button>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
@@ -235,16 +258,32 @@ function PropertyContent() {
           <div className="space-y-4">
             {visitors.map((visitor) => (
               <div key={visitor.id} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-semibold">
-                  {visitor.firstName} {visitor.lastName}
-                </h3>
-                {visitor.email && <p className="text-sm text-gray-600">{visitor.email}</p>}
-                {visitor.phone && <p className="text-sm text-gray-600">{visitor.phone}</p>}
-                {visitor.comments && (
-                  <p className="text-sm text-gray-600 mt-2">{visitor.comments}</p>
-                )}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold">
+                      {visitor.firstName} {visitor.lastName}
+                    </h3>
+                    {visitor.email && <p className="text-sm text-gray-600">{visitor.email}</p>}
+                    {visitor.phone && <p className="text-sm text-gray-600">{visitor.phone}</p>}
+                    {visitor.comments && (
+                      <p className="text-sm text-gray-600 mt-2">{visitor.comments}</p>
+                    )}
+                  </div>
+                  <button 
+                    onClick={() => handleDeleteVisitor(visitor.id)}
+                    className="text-red-500 hover:text-red-700"
+                    aria-label="Delete visitor"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
+            {visitors.length === 0 && (
+              <div className="text-center py-6 bg-white rounded-lg shadow">
+                <p className="text-gray-500">No visitors have signed in yet.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

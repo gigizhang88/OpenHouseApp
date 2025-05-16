@@ -43,6 +43,16 @@ export const db = {
   async getProperty(id: string): Promise<Property | null> {
     return (await get(`${DB_PREFIX}${id}`)) as Property | null;
   },
+  
+  async deleteProperty(id: string): Promise<void> {
+    // First delete all visitors associated with this property
+    const visitors = await this.getVisitors(id);
+    for (const visitor of visitors) {
+      await this.deleteVisitor(visitor.id);
+    }
+    // Then delete the property
+    await del(`${DB_PREFIX}${id}`);
+  },
 
   // Visitor methods
   async addVisitor(visitor: Omit<Visitor, 'id'>): Promise<Visitor> {
@@ -59,6 +69,10 @@ export const db = {
       .map(([_, value]) => value as Visitor)
       .filter(visitor => visitor.propertyId === propertyId)
       .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  },
+  
+  async deleteVisitor(id: string): Promise<void> {
+    await del(`${DB_PREFIX}${id}`);
   },
 
   async exportPropertyData(propertyId: string): Promise<string> {
