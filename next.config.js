@@ -16,6 +16,7 @@ const nextConfig = {
   basePath: process.env.NODE_ENV === 'production' ? '/OpenHouseApp' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/OpenHouseApp/' : '',
   trailingSlash: true, // This helps with GitHub Pages routing
+  distDir: process.env.DIST_DIR || '.next', // Allows customizing the output directory
 }
 
 module.exports = withPWA(nextConfig) 

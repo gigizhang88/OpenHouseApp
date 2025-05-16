@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { db, type Property } from '@/lib/db';
+import { getPathWithTrailingSlash, createPropertyLink } from '@/lib/navigation';
 
 export default function Home() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -22,7 +23,7 @@ export default function Home() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Open House Manager</h1>
         <Link
-          href="/property/new"
+          href={getPathWithTrailingSlash('/property/new')}
           className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
         >
           <PlusIcon className="w-5 h-5 mr-2" />
@@ -34,7 +35,7 @@ export default function Home() {
         {properties.map((property) => (
           <Link
             key={property.id}
-            href={`/property?id=${property.id}`}
+            href={createPropertyLink(property.id)}
             className="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">{property.address}</h2>

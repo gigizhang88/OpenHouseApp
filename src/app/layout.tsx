@@ -30,6 +30,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#22c55e" />
         <link rel="manifest" href="/manifest.json" />
+        <script src="/static-site-redirect.js" defer></script>
       </head>
       <body className={`${inter.className} bg-gray-50`}>
         <div className="min-h-screen">

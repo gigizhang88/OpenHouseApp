@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Open House App - Redirecting</title>
+  <script>
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // Modified version based on https://github.com/rafgraph/spa-github-pages
+    (function() {
+      // This script takes the current URL and converts the path to
+      // correctly handle routing in a static deployment
+      var pathSegmentsToKeep = 0; // Change to 1 if using GitHub Pages with repo name
+      
+      var l = window.location;
+      var cleanUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '');
+      
+      // Check if this is a known path that should be redirected
+      var path = l.pathname.split('/').slice(1 + pathSegmentsToKeep).join('/');
+      
+      // Special handling for main routes
+      if (path.startsWith('property/new')) {
+        // Handle the property/new route
+        window.location.href = cleanUrl + '/property/new/';
+      } else if (path.startsWith('property') && !path.endsWith('/')) {
+        // Handle property routes
+        if (l.search) {
+          window.location.href = cleanUrl + '/property/' + l.search;
+        } else {
+          window.location.href = cleanUrl + '/property/';
+        }
+      } else {
+        // Default: redirect to home
+        window.location.href = cleanUrl;
+      }
+    })();
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+  <p>If you are not redirected automatically, please click <a href="/">here</a>.</p>
+</body>
+</html> 

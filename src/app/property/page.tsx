@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { HomeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { db, type Property, type Visitor } from '@/lib/db';
+import { navigateTo } from '@/lib/navigation';
 
 type FormData = {
   firstName: string;
@@ -109,7 +110,7 @@ function PropertyContent() {
   const handleDeleteProperty = async () => {
     if (id && confirm('Are you sure you want to delete this property and all its visitors?')) {
       await db.deleteProperty(id);
-      router.push('/');
+      navigateTo(router, '/');
     }
   };
 
@@ -128,7 +129,7 @@ function PropertyContent() {
         </div>
         <div className="flex gap-2">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => navigateTo(router, '/')}
             className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
           >
             <HomeIcon className="w-5 h-5 mr-2" />
