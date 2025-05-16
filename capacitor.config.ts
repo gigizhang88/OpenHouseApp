@@ -1,17 +1,18 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.openhouse.app',
+  appId: 'com.youropenhouseapp.app',
   appName: 'Open House App',
   webDir: 'out',
   server: {
-    androidScheme: 'https',
-    iosScheme: 'https',
+    androidScheme: 'https'
   },
-  ios: {
-    contentInset: 'always',
-    scheme: 'Open House App',
-    backgroundColor: '#ffffff'
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: "#ffffff",
+      androidScaleType: "CENTER_CROP"
+    }
   }
 };
 

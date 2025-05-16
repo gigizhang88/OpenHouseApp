@@ -19,7 +19,7 @@ export default function NewProperty() {
       ...formData,
       createdAt: new Date().toISOString()
     });
-    router.push(`/property/${property.id}`);
+    router.push(`/property?id=${property.id}`);
   };
 
   return (
